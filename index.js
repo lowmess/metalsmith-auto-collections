@@ -25,7 +25,7 @@ const auto_collect = opts => {
     })
 
     // call metalsmith-collections
-    metalsmith.use(collections(opts.settings))
+    collections(opts.settings)(files, metalsmith, done)
   }
 }
 
