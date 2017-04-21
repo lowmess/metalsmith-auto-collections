@@ -19,23 +19,27 @@ const auto_collect = opts => {
 
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
+        // get name of parent directory
         let parent = path.dirname(file)
+
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
+
         // add collection key to file metadata
         // don't overwrite collection if exists
         let collection = files[file].collection || parent
-        // create new key if it doesn't exist
+
+        // create new key in metalsmith-collectinos config if it doesn't exist
         if (!config[collection]) config[collection] = opts.settings
+
         // set the file metadata
         files[file].collection = collection
         debug(`${file} added to "${parent}" collection`)
       }
     })
 
-    debug(`metalsmith-collections configuration: ${config}`)
-
     // call metalsmith-collections
+    debug(`metalsmith-collections configuration: ${config}`)
     collections(config)(files, metalsmith, done)
   }
 }

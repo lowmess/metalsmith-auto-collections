@@ -11,18 +11,21 @@ yarn add metalsmith-auto-collections [-D]
 ## Usage
 
 ```js
+const Metalsmith = require('metalsmith')
 const collect = require('metalsmith-auto-collections')
 
+const ms = Metalsmith(__dirname)
+
 // add all files to a collection
-metalsmith.use(collect())
+ms.use(collect())
 
 // use globs to only set certain files to a collection
-metalsmith.use(collect({
+ms.use(collect({
   pattern: ['**/*.md', '!*.md']
 }))
 
 // pass settings to `metalsmith-collections`
-metalsmith.use(collect({
+ms.use(collect({
   pattern: '**/*.md',
   settings: {
     sortBy: 'date',
