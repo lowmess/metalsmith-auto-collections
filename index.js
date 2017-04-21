@@ -15,7 +15,7 @@ const auto_collect = opts => {
     // initialize a container for all the collections
     // we use this so we can apply the settings for each collection
     // when we call metalsmith-collections
-    const collected = {}
+    const config = {}
 
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
@@ -28,15 +28,17 @@ const auto_collect = opts => {
           ? files[file].collection
           : parent
         // create new key if it doesn't exist
-        if (!collected[collection]) collected[collection] = opts.settings
+        if (!config[collection]) config[collection] = opts.settings
         // set the file metadata
         files[file].collection = collection
         debug(`${file} added to "${parent}" collection`)
       }
     })
 
+    debug(`metalsmith-collections configuration: ${config}`)
+
     // call metalsmith-collections
-    collections(collected)(files, metalsmith, done)
+    collections(config)(files, metalsmith, done)
   }
 }
 
