@@ -11,21 +11,32 @@ const auto_collect = opts => {
 
   return (files, metalsmith, done) => {
     setImmediate(done)
+
+    // initialize a container for all the collections
+    // we use this so we can apply the settings for each collection
+    // when we call metalsmith-collections
+    const collected = {}
+
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
         let parent = path.dirname(file)
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
+        // add collection key to file metadata
         // don't overwrite collection if exists
-        if (!files[file].collection) {
-          files[file].collection = parent
-          debug(`${file} added to "${parent}" collection`)
-        }
+        let collection = files[file].collection
+          ? files[file].collection
+          : parent
+        // create new key if it doesn't exist
+        if (!collected[collection]) collected[collection] = opts.settings
+        // set the file metadata
+        files[file].collection = collection
+        debug(`${file} added to "${parent}" collection`)
       }
     })
 
     // call metalsmith-collections
-    collections(opts.settings)(files, metalsmith, done)
+    collections(collected)(files, metalsmith, done)
   }
 }
 
