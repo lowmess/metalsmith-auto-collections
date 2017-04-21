@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-auto-collections",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A metalsmith plugin to automatically add files to collections based on parent directory",
   "main": "index.js",
   "repository": {
