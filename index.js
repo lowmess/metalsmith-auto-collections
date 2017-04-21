@@ -24,9 +24,7 @@ const auto_collect = opts => {
         parent = parent === '.' ? metalsmith._source : parent
         // add collection key to file metadata
         // don't overwrite collection if exists
-        let collection = files[file].collection
-          ? files[file].collection
-          : parent
+        let collection = files[file].collection || parent
         // create new key if it doesn't exist
         if (!config[collection]) config[collection] = opts.settings
         // set the file metadata
