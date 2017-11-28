@@ -4,8 +4,12 @@ const mm = require('micromatch')
 const path = require('path')
 
 const auto_collect = opts => {
+  // set opts to empty object if no options are passed
+  // we do this so that attempting to call opts.key doesn't error
+  // if the key does not exist
+  opts = opts || {}
   // get the pattern from the config, or default to all files
-  opts.pattern = opts.pattern || []
+  opts.pattern = opts.pattern || '**'
   // get options to pass to metalsmith-collections
   opts.settings = opts.settings || {}
 
@@ -27,14 +31,14 @@ const auto_collect = opts => {
 
         // add collection key to file metadata
         // don't overwrite collection if exists
-        let collection = files[file].collection || parent
+        const collection = files[file].collection || parent
 
-        // create new key in metalsmith-collectinos config if it doesn't exist
+        // create new key in metalsmith-collections config if it doesn't exist
         if (!config[collection]) config[collection] = opts.settings
 
         // set the file metadata
         files[file].collection = collection
-        debug(`${file} added to "${parent}" collection`)
+        debug(`${file} added to "${collection}" collection`)
       }
     })
 
