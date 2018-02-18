@@ -29,6 +29,11 @@ const auto_collect = opts => {
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
 
+        // set parent key on file
+        files[file].parent =
+          files[file].parent ||
+          path.join(metalsmith._source, path.dirname(file))
+
         // add collection key to file metadata
         // don't overwrite collection if exists
         const collection = files[file].collection || parent
