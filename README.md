@@ -32,6 +32,20 @@ ms.use(collect({
     reverse: true
   }
 }))
+
+// additionally add collections manually (won't be overwritten by automatically added collections)
+ms.use(collect({
+  manualCollections: {
+    foo: {
+      pattern: 'foo/*.md',
+      sortBy: 'date'
+    },
+    bar: {
+      pattern: 'bar.md'
+    }
+  },
+  pattern: '**/*.md'
+}))
 ```
 
  To see the available options, see the [`metalsmith-collections` repo](https://github.com/segmentio/metalsmith-collections).

@@ -17,9 +17,10 @@ const auto_collect = opts => {
     setImmediate(done)
 
     // initialize a container for all the collections
-    // we use this so we can apply the settings for each collection
+    // (with the manually added collections or none by default)
+    // we use this so we can apply the settings for each automatically added collection
     // when we call metalsmith-collections
-    const config = {}
+    const config = opts.manualCollections || {}
 
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
