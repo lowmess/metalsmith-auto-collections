@@ -36,9 +36,9 @@ ms.use(collect({
 // pass collections to metalsmith-collections` (for manual collections)
 ms.use(collect({
   manual: {
-	  navigation: {
-		  sortBy: "ordering"
-	  }
+    navigation: {
+      sortBy: "ordering"
+    }
   }
 }))
 ```
