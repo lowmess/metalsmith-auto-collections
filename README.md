@@ -32,6 +32,15 @@ ms.use(collect({
     reverse: true
   }
 }))
+
+// pass collections to metalsmith-collections` (for manual collections)
+ms.use(collect({
+  manual: {
+	  navigation: {
+		  sortBy: "ordering"
+	  }
+  }
+}))
 ```
 
  To see the available options, see the [`metalsmith-collections` repo](https://github.com/segmentio/metalsmith-collections).

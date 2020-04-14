@@ -12,6 +12,8 @@ const auto_collect = opts => {
   opts.pattern = opts.pattern || '**'
   // get options to pass to metalsmith-collections
   opts.settings = opts.settings || {}
+  // get optional manual collections
+  opts.manual = opts.manual || {}
 
   return (files, metalsmith, done) => {
     setImmediate(done)
@@ -21,10 +23,18 @@ const auto_collect = opts => {
     // when we call metalsmith-collections
     const config = {}
 
+    // Add non-automatic collections to config.
+    Object.keys(opts.manual).forEach(collection => {
+      if (!config[collection]) config[collection] = opts.manual[collection]
+    })
+
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
         // get name of parent directory
-        let parent = path.dirname(file).split(path.sep).pop()
+        let parent = path
+          .dirname(file)
+          .split(path.sep)
+          .pop()
 
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
