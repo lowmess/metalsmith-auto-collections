@@ -31,10 +31,7 @@ const auto_collect = opts => {
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
         // get name of parent directory
-        let parent = path
-          .dirname(file)
-          .split(path.sep)
-          .pop()
+        let parent = path.dirname(file).split(path.sep).pop()
 
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
