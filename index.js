@@ -25,15 +25,17 @@ const auto_collect = ({ pattern = '**', settings = {}, collections = {} }) => {
         // set parent to source file in config if file is in root
         parent = parent === '.' ? metalsmith._source : parent
 
-        // set parent key on file
+        // create new key in metalsmith-collections config if it doesn't exist
+        if (!config[parent]) config[parent] = settings
+
+        // add parent metadata to file
         files[file].parent =
           files[file].parent ||
           path.join(metalsmith._source, path.dirname(file))
 
-        // create new key in metalsmith-collections config if it doesn't exist
-        if (!config[parent]) config[parent] = settings
-
-        // extend the file metadata, filtering out falsy collection names
+        // extend the file's collection metadata, filtering out falsy collection
+        // names. this prevents automatic collections from overriding manually
+        // set collections.
         files[file].collection = [files[file].collection, parent].filter(
           (c) => c
         )
