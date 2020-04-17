@@ -12,6 +12,8 @@ const auto_collect = opts => {
   opts.pattern = opts.pattern || '**'
   // get options to pass to metalsmith-collections
   opts.settings = opts.settings || {}
+  // get optional manual collections
+  opts.manual = opts.manual || {}
 
   return (files, metalsmith, done) => {
     setImmediate(done)
@@ -20,6 +22,11 @@ const auto_collect = opts => {
     // we use this so we can apply the settings for each collection
     // when we call metalsmith-collections
     const config = {}
+
+    // Add non-automatic collections to config.
+    Object.keys(opts.manual).forEach(collection => {
+      if (!config[collection]) config[collection] = opts.manual[collection]
+    })
 
     Object.keys(files).forEach(file => {
       if (mm(file, opts.pattern).length) {
