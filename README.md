@@ -5,7 +5,7 @@ Automatically use `metalsmith-collections`. The collection name is equal to the 
 ## Installation
 
 ```sh
-yarn add metalsmith-auto-collections [-D]
+npm install metalsmith-auto-collections [-D]
 ```
 
 ## Usage
@@ -20,27 +20,33 @@ const ms = Metalsmith(__dirname)
 ms.use(collect())
 
 // use globs to only set certain files to a collection
-ms.use(collect({
-  pattern: ['**/*.md', '!*.md']
-}))
+ms.use(
+  collect({
+    pattern: ['**/*.md', '!*.md'],
+  })
+)
 
 // pass settings to `metalsmith-collections`
-ms.use(collect({
-  pattern: '**/*.md',
-  settings: {
-    sortBy: 'date',
-    reverse: true
-  }
-}))
+ms.use(
+  collect({
+    pattern: '**/*.md',
+    settings: {
+      sortBy: 'date',
+      reverse: true,
+    },
+  })
+)
 
 // pass collections to metalsmith-collections (for manual collections)
-ms.use(collect({
-  collections: {
-    navigation: {
-      sortBy: "ordering"
-    }
-  }
-}))
+ms.use(
+  collect({
+    collections: {
+      navigation: {
+        sortBy: 'ordering',
+      },
+    },
+  })
+)
 ```
 
- To see the available options, see the [`metalsmith-collections` repo](https://github.com/segmentio/metalsmith-collections).
+To see the available options, see the [`metalsmith-collections` repo](https://github.com/segmentio/metalsmith-collections).

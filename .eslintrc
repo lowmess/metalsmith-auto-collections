@@ -1,0 +1,6 @@
+{
+  "extends": ["lowmess"],
+  "env": {
+    "node": true
+  }
+}
