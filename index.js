@@ -1,20 +1,9 @@
 const path = require('path')
 const debug = require('debug')('metalsmith-auto-collections')
-const collections = require('metalsmith-collections')
+const msCollections = require('metalsmith-collections')
 const mm = require('micromatch')
 
-const auto_collect = (opts) => {
-  // set opts to empty object if no options are passed
-  // we do this so that attempting to call opts.key doesn't error
-  // if the key does not exist
-  const options = opts || {}
-  // get the pattern from the config, or default to all files
-  options.pattern = opts.pattern || '**'
-  // get options to pass to metalsmith-collections
-  options.settings = opts.settings || {}
-  // get optional manual collections
-  options.collections = opts.collections || {}
-
+const auto_collect = ({ pattern = '**', settings = {}, collections = {} }) => {
   return (files, metalsmith, done) => {
     setImmediate(done)
 
@@ -24,13 +13,12 @@ const auto_collect = (opts) => {
     const config = {}
 
     // Add non-automatic collections to config
-    Object.keys(options.collections).forEach((collection) => {
-      if (!config[collection])
-        config[collection] = options.collections[collection]
+    Object.keys(collections).forEach((collection) => {
+      if (!config[collection]) config[collection] = collections[collection]
     })
 
     Object.keys(files).forEach((file) => {
-      if (mm(file, options.pattern).length) {
+      if (mm(file, pattern).length) {
         // get name of parent directory
         let parent = path.dirname(file).split(path.sep).pop()
 
@@ -43,7 +31,7 @@ const auto_collect = (opts) => {
           path.join(metalsmith._source, path.dirname(file))
 
         // create new key in metalsmith-collections config if it doesn't exist
-        if (!config[parent]) config[parent] = options.settings
+        if (!config[parent]) config[parent] = settings
 
         // extend the file metadata, filtering out falsy collection names
         files[file].collection = [files[file].collection, parent].filter(
@@ -56,7 +44,7 @@ const auto_collect = (opts) => {
 
     // call metalsmith-collections
     debug(`metalsmith-collections configuration: ${config}`)
-    collections(config)(files, metalsmith, done)
+    msCollections(config)(files, metalsmith, done)
   }
 }
 
