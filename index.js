@@ -13,7 +13,7 @@ const auto_collect = opts => {
   // get options to pass to metalsmith-collections
   opts.settings = opts.settings || {}
   // get optional manual collections
-  opts.manual = opts.manual || {}
+  opts.collections = opts.collections || {}
 
   return (files, metalsmith, done) => {
     setImmediate(done)
@@ -23,9 +23,9 @@ const auto_collect = opts => {
     // when we call metalsmith-collections
     const config = {}
 
-    // Add non-automatic collections to config.
-    Object.keys(opts.manual).forEach(collection => {
-      if (!config[collection]) config[collection] = opts.manual[collection]
+    // Add non-automatic collections to config
+    Object.keys(opts.collections).forEach(collection => {
+      if (!config[collection]) config[collection] = opts.collections[collection]
     })
 
     Object.keys(files).forEach(file => {
@@ -41,16 +41,13 @@ const auto_collect = opts => {
           files[file].parent ||
           path.join(metalsmith._source, path.dirname(file))
 
-        // add collection key to file metadata
-        // don't overwrite collection if exists
-        const collection = files[file].collection || parent
-
         // create new key in metalsmith-collections config if it doesn't exist
-        if (!config[collection]) config[collection] = opts.settings
+        if (!config[parent]) config[parent] = opts.settings
 
-        // set the file metadata
-        files[file].collection = collection
-        debug(`${file} added to "${collection}" collection`)
+        // extend the file metadata, filtering out falsy collections
+        files[file].collection = [files[file].collection, parent].filter(c => c)
+
+        debug(`${file} added to "${parent}" collection`)
       }
     })
 
