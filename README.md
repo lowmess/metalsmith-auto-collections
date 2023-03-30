@@ -1,3 +1,14 @@
+# DEPRECATED
+
+It is suggested you use the [`@metalsmith/collections`](https://www.npmjs.com/package/@metalsmith/collections) plugin directly. While there is (at time of writing) no way to automatically generate collections by directory, doing so manually is simple:
+
+```js
+metalsmith.use(collections({
+  blog: 'blog/*',
+  features: 'features/*',
+})
+```
+
 # `metalsmith-auto-collections`
 
 Automatically use `metalsmith-collections`. The collection name is equal to the parent directory of each file.
